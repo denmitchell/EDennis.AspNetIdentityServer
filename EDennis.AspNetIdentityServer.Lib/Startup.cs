@@ -1,5 +1,8 @@
 using EDennis.AspNetIdentityServer.Data;
+using EDennis.AspNetIdentityServer.Lib;
 using EDennis.AspNetIdentityServer.Lib.Models;
+using IdentityServer4.EntityFramework.DbContexts;
+using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System.Linq;
 using System.Reflection;
 
 namespace EDennis.AspNetIdentityServer {
@@ -80,6 +84,38 @@ namespace EDennis.AspNetIdentityServer {
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+        }
+
+
+        // Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
+        // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+        private void InitializeDatabase(IApplicationBuilder app) {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope()) {
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any()) {
+                    foreach (var client in Config.Clients) {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.IdentityResources.Any()) {
+                    foreach (var resource in Config.Ids) {
+                        context.IdentityResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+
+                if (!context.ApiResources.Any()) {
+                    foreach (var resource in Config.Apis) {
+                        context.ApiResources.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
+            }
         }
     }
 }
