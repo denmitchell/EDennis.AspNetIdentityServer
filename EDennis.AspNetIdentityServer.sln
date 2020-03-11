@@ -13,7 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcApp", "MvcApp\MvcApp.csp
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "README", "README", "{B77541DF-D1CB-4ABC-A516-DA4B13A9E3A9}"
 	ProjectSection(SolutionItems) = preProject
-		README.txt = README.txt
+		ARCHITECTURE.txt = ARCHITECTURE.txt
+		SETUP.txt = SETUP.txt
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,51 @@
+This solution consists of four projects that are mostly modeled after IdentityServer quickstart projects:
+
+1. EDennis.AspNetIdentityServer.Lib -- a project that combines AspNetIdentity and IdentityServer functionality
+   into a single project.  Note that a partial user interface was scaffolded, but almost no customization
+   was performed.  Here are some of the steps I took to setup the project:
+   A. Create a new Web Application (I used MVC) with AspNetIdentity support
+   B. Add various package references to IdentityServer, Entity Framework, and Serilog (see the .csproj file)
+   C. Modify the Startup class to support IdentityServer with AspNetIdentity
+   D. Modify the Config class so that 
+      i.   The Api1 ApiResource has a secret (for reference token support) and selected UserClaims are returned
+      ii.  The mvc client has these additional properties (to support Authorization Code and reference tokens)
+            - AllowedGrantTypes = GrantTypes.Code,
+            - RequirePkce = true,
+            - AccessTokenType = AccessTokenType.Reference,
+   E. Modify the Program class to seed IdentityServer and AspNetIdentity tables if a command-line argument
+      "/seed" is provided
+   F. Create two self-hosting launch profiles -- one of which includes the "/seed" command-line argument
+   G. Scaffold out Identity Pages for Login, Logout, Register, ConfirmEmail, AccessDenied, 
+      RegisterConfirmation, and _StatusMessage; and move the entire Pages folder to the project root
+      (which is the default expected location for these pages).
+   H. Create MockEmailSender (: IEmailSender) and register it in the DI
+   J. Add connection strings in appsettings.Development.json
+
+   * NOTE: I added three entities (AspNetClaim, AspNetClient, and AspNetClientClaim) that might not be needed
+   * NOTE: I added a UserClientClaimsProfileService and a GetUserClientClaims stored procedure that might not be needed
+           (I will explore a revision of the profile service in a separate git branch)
+
+   * NOTE: I used a particular naming convention for the roles and user_scope values, where the identifier
+           was prefixed by the project name.  This may be used for filtering later.
+
+2. Api1 -- a Web API projects with a single controller: IdentityController, which
+   has a number of GET endpoints, some of which are protected by Authorized Roles and some of which are
+   protected by Authorized policies.
+
+   - See the Startup class for the definition of authorization policies
+   - See the IdentityController for the various protected endpoints 
+   - See the Startup class for how to configure authentication using .AddIdentityServerAuthentication 
+     (which has support for ReferenceTokens)
+
+3. Client -- a console app that can be used to test direct authorized access to Api1 using Client Credentials Flow
+
+4. MvcApp -- an MVC application that uses OpenIdConnect Authorization Code flow to securely connect to Api1
+   - The project uses a "named client" (IHttpClientFactory) approach to encapsulating communications with Api1
+     (see the Api1 class in the project)
+   - The project uses a TokenPropagatingHandler (based upon Kevin Dockx's BearerTokenHandler)
+     to propagate the access token from the MVC app to Api1.  This class is configured in Startup
+   - The HomeController class has a Logout endpoint that clears all cookies, logging the user 
+     out of the application and identity server.  This could be configured differently.
+   - The project makes use of an Apis section in appsettings.Development.json.
+   - See the Startup class for additional configurations.
+
