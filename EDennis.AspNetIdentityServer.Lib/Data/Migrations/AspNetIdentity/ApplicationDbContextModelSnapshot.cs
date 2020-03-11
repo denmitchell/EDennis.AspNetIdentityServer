@@ -19,48 +19,6 @@ namespace EDennis.AspNetIdentityServer.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("EDennis.AspNetIdentityServer.Models.AspNetClaim", b =>
-                {
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClaimType", "ClaimValue");
-
-                    b.ToTable("AspNetClaims");
-                });
-
-            modelBuilder.Entity("EDennis.AspNetIdentityServer.Models.AspNetClient", b =>
-                {
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClientId");
-
-                    b.ToTable("AspNetClients");
-                });
-
-            modelBuilder.Entity("EDennis.AspNetIdentityServer.Models.AspNetClientClaim", b =>
-                {
-                    b.Property<string>("ClientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("fk_AspNetClientClaims_AspNetClient")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("ClientId", "ClaimType");
-
-                    b.HasIndex("ClaimType");
-
-                    b.HasIndex("fk_AspNetClientClaims_AspNetClient");
-
-                    b.ToTable("AspNetClientClaims");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -262,12 +220,6 @@ namespace EDennis.AspNetIdentityServer.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("EDennis.AspNetIdentityServer.Models.AspNetClientClaim", b =>
-                {
-                    b.HasOne("EDennis.AspNetIdentityServer.Models.AspNetClient", "AspNetClient")
-                        .WithMany("AspNetClientClaims")
-                        .HasForeignKey("fk_AspNetClientClaims_AspNetClient");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {

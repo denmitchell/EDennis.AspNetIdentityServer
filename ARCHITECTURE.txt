@@ -1,5 +1,7 @@
 This solution consists of four projects that are mostly modeled after IdentityServer quickstart projects:
 
+**See Item 1K for changes in this branch vs. the master
+
 1. EDennis.AspNetIdentityServer.Lib -- a project that combines AspNetIdentity and IdentityServer functionality
    into a single project.  Note that a partial user interface was scaffolded, but almost no customization
    was performed.  Here are some of the steps I took to setup the project:
@@ -20,12 +22,10 @@ This solution consists of four projects that are mostly modeled after IdentitySe
       (which is the default expected location for these pages).
    H. Create MockEmailSender (: IEmailSender) and register it in the DI
    J. Add connection strings in appsettings.Development.json
+   K. ***Replaced IdentityServer's ProfileService with UserClientClaimsProfileService, which
+      gets the roles and role claims associated with a role whose prefix is the clientid, 
+      as well as all requested user claims for the API
 
-   * NOTE: I added three entities (AspNetClaim, AspNetClient, and AspNetClientClaim) that might not be needed
-   * NOTE: I added a UserClientClaimsProfileService and a GetUserClientClaims stored procedure that might not be needed
-           (I will explore a revision of the profile service in a separate git branch)
-   * NOTE: I used a particular naming convention for the roles and user_scope values, where the identifier
-           was prefixed by the project name.  This may be used for filtering later.
    * NOTE: The .Lib prefix was added because the AspNetIdentityServer project will be split into three projects
            in the future to support a NuGet/Launcher architecture for Api solutions.
 

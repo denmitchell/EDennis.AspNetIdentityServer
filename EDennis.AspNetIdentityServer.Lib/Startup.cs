@@ -61,7 +61,7 @@ namespace EDennis.AspNetIdentityServer {
 
                 //replace Identity Server's ProfileService with a profile service that determines
                 //which claims to retrieve for a user/client as configured in the database
-                //services.Replace(ServiceDescriptor.Transient<IProfileService, UserClientClaimsProfileService>());
+                services.Replace(ServiceDescriptor.Transient<IProfileService, UserClientClaimsProfileService>());
 
         }
 

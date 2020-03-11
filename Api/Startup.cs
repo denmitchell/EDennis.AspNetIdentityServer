@@ -33,7 +33,7 @@ namespace Api {
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(options => {
                     options.Authority = "https://localhost:5000";
-                    options.ApiName = "api1";
+                    options.ApiName = "Api1";
                     options.ApiSecret = "secret";
                 });
 
@@ -41,11 +41,11 @@ namespace Api {
             options =>
             {
                 options.AddPolicy("GetPolicy", policy =>
-                    policy.RequireClaim("user_scope","Api1.*.Get*"));
+                    policy.RequireClaim("Api1.scope", "Api1.*.Get*"));
                 options.AddPolicy("EditPolicy", policy =>
-                    policy.RequireClaim("user_scope", "Api1.*.Edit*"));
+                    policy.RequireClaim("Api1.scope", "Api1.*.Edit*"));
                 options.AddPolicy("DeletePolicy", policy =>
-                    policy.RequireClaim("user_scope", "Api1.*.Delete*"));
+                    policy.RequireClaim("Api1.scope", "Api1.*.Delete*"));
             });
 
 

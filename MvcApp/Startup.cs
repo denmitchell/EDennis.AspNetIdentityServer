@@ -67,10 +67,10 @@ namespace MvcApp {
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => {
                     options.Authority = "https://localhost:5000";
                     options.RequireHttpsMetadata = false;
-                    options.ClientId = "mvc";
+                    options.ClientId = "MvcApp";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
-                    options.Scope.Add("api1");
+                    options.Scope.Add("Api1");
                     options.Scope.Add("roles");
                     options.SaveTokens = true;
                 });

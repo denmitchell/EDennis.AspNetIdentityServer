@@ -32,19 +32,19 @@ namespace Api.Controllers {
         }
 
 
-        [Authorize(Roles = "Api1.Admin")]
+        [Authorize(Roles = "MvcApp.Admin")]
         [HttpGet("Delete/Role")]
         public IActionResult DeleteRole() {
             return new JsonResult(new ActionModel { Action = "Delete/Role" });
         }
 
-        [Authorize(Roles = "Api1.Admin,Api1.User")]
+        [Authorize(Roles = "MvcApp.Admin,MvcApp.User")]
         [HttpGet("Edit/Role")]
         public IActionResult EditRole() {
             return new JsonResult(new ActionModel { Action = "Edit/Role" });
         }
 
-        [Authorize(Roles = "Api1.Admin,Api1.User,Api1.Readonly")]
+        [Authorize(Roles = "MvcApp.Admin,MvcApp.User,MvcApp.Readonly")]
         [HttpGet("Get/Role")]
         public IActionResult GetRole() {
             return new JsonResult(new ActionModel { Action = "Get/Role" });

@@ -28,10 +28,15 @@ namespace EDennis.AspNetIdentityServer {
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("api1", "Api1", new List<string>() { "role" })
+                new ApiResource("Api1", "Api1", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email","user_scope" }
+                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }
+                },
+                new ApiResource("Api2", "Api2", new List<string>() { "role" })
+                {
+                    ApiSecrets = { new Secret("secret".Sha256()) },
+                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }
                 }
             };
 
@@ -46,12 +51,12 @@ namespace EDennis.AspNetIdentityServer {
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "Api1" }
                 },
                 // interactive ASP.NET Core MVC client
                 new Client
                 {
-                    ClientId = "mvc",
+                    ClientId = "MvcApp",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,
@@ -70,8 +75,8 @@ namespace EDennis.AspNetIdentityServer {
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1",
-                    "roles"
+                        "Api1",
+                        "roles"
                     },
 
                     AllowOfflineAccess = true
