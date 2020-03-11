@@ -1,4 +1,5 @@
 ﻿using Api1;
+using Api1.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,41 +32,41 @@ namespace Api.Controllers {
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Api1.Admin")]
         [HttpGet("Delete/Role")]
         public IActionResult DeleteRole() {
-            return new JsonResult("{\"Action\":\"Delete/Role\"}");
+            return new JsonResult(new ActionModel { Action = "Delete/Role" });
         }
 
-        [Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Api1.Admin,Api1.User")]
         [HttpGet("Edit/Role")]
         public IActionResult EditRole() {
-            return new JsonResult("{\"Action\":\"Edit/Role\"}");
+            return new JsonResult(new ActionModel { Action = "Edit/Role" });
         }
 
-        [Authorize(Roles = "Admin,User,Readonly")]
+        [Authorize(Roles = "Api1.Admin,Api1.User,Api1.Readonly")]
         [HttpGet("Get/Role")]
         public IActionResult GetRole() {
-            return new JsonResult("{\"Action\":\"Get/Role\"}");
+            return new JsonResult(new ActionModel { Action = "Get/Role" });
         }
 
 
         [Authorize(Policy = "DeletePolicy")]
         [HttpGet("Delete/Policy")]
         public IActionResult DeletePolicy() {
-            return new JsonResult("{\"Action\":\"Delete/Policy\"}");
+            return new JsonResult(new ActionModel { Action = "Delete/Policy" });
         }
 
         [Authorize(Policy = "EditPolicy")]
         [HttpGet("Edit/Policy")]
         public IActionResult EditPolicy() {
-            return new JsonResult("{\"Action\":\"Edit/Policy\"}");
+            return new JsonResult(new ActionModel { Action = "Edit/Policy" });
         }
 
         [Authorize(Policy = "GetPolicy")]
         [HttpGet("Get/Policy")]
         public IActionResult GetPolicy() {
-            return new JsonResult("{\"Action\":\"Get/Policy\"}");
+            return new JsonResult(new ActionModel { Action = "Get/Policy" });
         }
 
 

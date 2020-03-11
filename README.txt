@@ -1,0 +1,24 @@
+Setup for Combined AspNetIdentity and IdentityServer
+
+NOTE: no logout functionality yet!
+
+1. Create the database
+   PM> update-database -Context ConfigurationDbContext -Project EDennis.AspNetIdentityServer.Lib -StartupProject EDennis.AspNetIdentityServer.Lib
+   PM> update-database -Context PersistedGrantDbContext -Project EDennis.AspNetIdentityServer.Lib -StartupProject EDennis.AspNetIdentityServer.Lib
+   PM> update-database -Context AspNetIdentityDbContext -Project EDennis.AspNetIdentityServer.Lib -StartupProject EDennis.AspNetIdentityServer.Lib
+
+2. Populate the database with some test data
+   a. Set EDennis.AspNetIdentityServer.Lib as startup project
+   b. Select the "Seed" launch profile
+   c. Start the application
+
+3. Run the solution
+   a. Configure the solution for multiple startup projects: 
+      - EDennis.AspNetIdentityServer
+      - Api1
+      - MvcApp
+   b. Run the application
+   c. Login as moe@stooges.org, P@ssword1 (moe is an admin)
+   d. Clear the cookie, restart, and login as larry@stooges.org, P@ssword1 (larry is a user)
+   e. Clear the cookie, restart, and login as curly@stooges.org, P@ssword1 (curly is readonly)
+

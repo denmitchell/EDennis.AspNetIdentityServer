@@ -20,13 +20,18 @@ namespace EDennis.AspNetIdentityServer {
             };
 
 
+
+        //Api1.Role   Api1.Admin
+        //Api1.Scope
+
+
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
                 new ApiResource("api1", "Api1", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email" }
+                    UserClaims = { "Name","Email","user_scope" }
                 }
             };
 

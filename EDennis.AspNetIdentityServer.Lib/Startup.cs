@@ -7,6 +7,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,7 +35,8 @@ namespace EDennis.AspNetIdentityServer {
                 options.UseSqlServer(cxnAspNetIdentity));
             
             services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<AspNetIdentityDbContext>();
+                .AddEntityFrameworkStores<AspNetIdentityDbContext>()
+                .AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -42,6 +44,8 @@ namespace EDennis.AspNetIdentityServer {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             string cxnConfiguration = Configuration["DbContexts:ConfigurationDbContext:ConnectionString"];
             string cxnPersistedGrant = Configuration["DbContexts:PersistedGrantDbContext:ConnectionString"];
+
+            services.AddTransient<IEmailSender, MockEmailSender>();
 
             services.AddIdentityServer()
                 .AddConfigurationStore(options => {
