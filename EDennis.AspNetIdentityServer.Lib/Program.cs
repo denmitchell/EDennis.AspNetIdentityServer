@@ -141,9 +141,9 @@ namespace EDennis.AspNetIdentityServer {
                 //use the user manager to create test users
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                var moe = new IdentityUser { UserName = "Moe", EmailConfirmed = true};
-                var larry = new IdentityUser { UserName = "Larry", EmailConfirmed = true };
-                var curly = new IdentityUser { UserName = "Curly", EmailConfirmed = true };
+                var moe = new IdentityUser { UserName = "Moe", Email="moe@stooges.org", EmailConfirmed = true};
+                var larry = new IdentityUser { UserName = "Larry", Email = "larry@stooges.org", EmailConfirmed = true };
+                var curly = new IdentityUser { UserName = "Curly", Email = "curly@stooges.org", EmailConfirmed = true };
 
                 userManager.CreateAsync(moe, "P@ssword1").Wait();
                 userManager.CreateAsync(larry, "P@ssword1").Wait();
