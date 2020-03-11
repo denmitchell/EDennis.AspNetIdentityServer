@@ -64,7 +64,6 @@ namespace MvcApp {
                 .AddOpenIdConnect("oidc", options => {
                     options.Authority = "https://localhost:5000";
                     options.RequireHttpsMetadata = false;
-
                     options.ClientId = "mvc";
                     options.ClientSecret = "secret";
                     options.ResponseType = "code";
