@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -26,10 +27,11 @@ namespace EDennis.AspNetIdentityServer {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
 
+            //Debugger.Launch();
+
             string cxnAspNetIdentity = Configuration["DbContexts:AspNetIdentityDbContext:ConnectionString"];
             services.AddDbContext<AspNetIdentityDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString(cxnAspNetIdentity)));
+                options.UseSqlServer(cxnAspNetIdentity));
             
             services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<AspNetIdentityDbContext>();
@@ -55,7 +57,7 @@ namespace EDennis.AspNetIdentityServer {
 
                 //replace Identity Server's ProfileService with a profile service that determines
                 //which claims to retrieve for a user/client as configured in the database
-                services.Replace(ServiceDescriptor.Transient<IProfileService, UserClientClaimsProfileService>());
+                //services.Replace(ServiceDescriptor.Transient<IProfileService, UserClientClaimsProfileService>());
 
         }
 

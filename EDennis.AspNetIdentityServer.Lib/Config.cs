@@ -13,13 +13,21 @@ namespace EDennis.AspNetIdentityServer {
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                new IdentityResource(
+                            "roles",
+                                    "Your role(s)",
+                            new List<string>() { "role" })
             };
 
 
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
-                new ApiResource("api1", "My API")
+                new ApiResource("api1", "Api1", new List<string>() { "role" })
+                {
+                    ApiSecrets = { new Secret("secret".Sha256()) },
+                    UserClaims = { "Name","Email" }
+                }
             };
 
         public static IEnumerable<Client> Clients =>
@@ -44,7 +52,9 @@ namespace EDennis.AspNetIdentityServer {
                     AllowedGrantTypes = GrantTypes.Code,
                     RequireConsent = false,
                     RequirePkce = true,
-                
+
+                    AccessTokenType = AccessTokenType.Reference,
+
                     // where to redirect to after login
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
 
@@ -55,7 +65,8 @@ namespace EDennis.AspNetIdentityServer {
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "api1"
+                        "api1",
+                    "roles"
                     },
 
                     AllowOfflineAccess = true

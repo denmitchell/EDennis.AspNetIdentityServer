@@ -1,29 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using IdentityModel.Client;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
+﻿NOTE: still working on how to get user claims from reference token
 
-namespace MvcApp {
-    public class Startup {
-        public Startup(IConfiguration configuration) {
-            Configuration = configuration;
-        }
 
-        public IConfiguration Configuration { get; }
+Per https://github.com/KevinDockx/SecuringAspNetCore3WithOAuth2AndOIDC ...
+1. In Api startup ...
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerAuthentication(options => {
+                    options.Authority = "https://localhost:5000";
+                    options.ApiName = "api1";
+                    options.ApiSecret = "secret";
+                });
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) {
-            services.AddControllersWithViews();
+2. In Identity Server Config ...
+        public static IEnumerable<ApiResource> Apis =>
+            new List<ApiResource>
+            {
+                new ApiResource("api1", "Api1", new List<string>() { "role" })
+                {
+                    ApiSecrets = { new Secret("secret".Sha256()) }
+                }
+            };
+
+    ...
+
+        new Client
+        {
+            ClientId = "mvc",
+            ClientSecrets = { new Secret("secret".Sha256()) },
+
+            AllowedGrantTypes = GrantTypes.Code,
+            //RequireConsent = false,
+            RequirePkce = true,
+            UpdateAccessTokenClaimsOnRefresh = true,
+
+            AccessTokenType = AccessTokenType.Reference,
+
+3. In Mvc Startup ...
+
 
             JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
@@ -54,7 +66,6 @@ namespace MvcApp {
 
             services.AddScoped<Api1>();
 
-
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = "Cookies";
@@ -72,31 +83,22 @@ namespace MvcApp {
                     options.Scope.Add("roles");
                     options.SaveTokens = true;
                 });
-        }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
-            if (env.IsDevelopment()) {
-                app.UseDeveloperExceptionPage();
-            } else {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+4. Include TokenPropagatingHandler.cs
 
-            app.UseRouting();
+5. In appsettings ...
 
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}")
-                .RequireAuthorization();
-            });
-        }
+  "Apis": {
+    "IdentityServer": {
+      "Host": "localhost",
+      "HttpsPort": 5000,
+      "ClientSecret": "secret",
+      "AccessTokenType": "Jwt"
+    },
+    "Api1": {
+      "Host": "localhost",
+      "HttpsPort": 5001,
+      "ClientSecret": "secret",
+      "AccessTokenType":  "Reference"
     }
-}
+  },

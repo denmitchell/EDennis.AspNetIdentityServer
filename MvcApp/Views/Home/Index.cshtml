@@ -1,9 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Authentication
+@model IEnumerable<ClaimViewModel>
 
-<h2>Claims</h2>
+<h2>Claims from MvcApp</h2>
 
 <dl>
     @foreach (var claim in User.Claims) {
+        <dt>@claim.Type</dt>
+        <dd>@claim.Value</dd>
+    }
+</dl>
+
+<h2>Claims from Api1</h2>
+
+<dl>
+    @foreach (var claim in Model) {
         <dt>@claim.Type</dt>
         <dd>@claim.Value</dd>
     }
@@ -17,3 +27,4 @@
         <dd>@prop.Value</dd>
     }
 </dl>
+

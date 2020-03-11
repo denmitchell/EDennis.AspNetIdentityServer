@@ -5,6 +5,7 @@ using IdentityServer4.EntityFramework.Mappers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -12,12 +13,16 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 
 namespace EDennis.AspNetIdentityServer {
     public class Program {
         public static int Main(string[] args) {
+
+            //Debugger.Launch();
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
@@ -99,59 +104,82 @@ namespace EDennis.AspNetIdentityServer {
             //seed the database
             using var scope = host.Services.CreateScope();
             try {
+
                 var context = scope.ServiceProvider.GetService<AspNetIdentityDbContext>();
 
                 //ensure db is migrated before seeding
                 context.Database.Migrate();
 
+                var anyRecs = context.Users.Any();
+                if (anyRecs)
+                    return;
+
+
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                var admin = new IdentityRole { Name = "Api1.Admin" };
+                var user = new IdentityRole { Name = "Api1.User" };
+                var readOnly = new IdentityRole { Name = "Api1.Readonly" };
+
+
+                roleManager.CreateAsync(admin).Wait();
+                roleManager.CreateAsync(user).Wait();
+                roleManager.CreateAsync(readOnly).Wait();
+
+                context.SaveChanges();
+
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Get*")).Wait();
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Delete*")).Wait();
+                roleManager.AddClaimAsync(user, new Claim("user_scope", "Api1.*.Get*")).Wait();
+                roleManager.AddClaimAsync(user, new Claim("user_scope", "Api1.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(readOnly, new Claim("user_scope", "Api1.*.Get*")).Wait();
+
+                context.SaveChanges();
+
+
                 //use the user manager to create test users
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                var jack = userManager.FindByNameAsync("Jack").Result;
-                if (jack == null) {
-                    jack = new IdentityUser {
-                        UserName = "Jack",
-                        EmailConfirmed = true
-                    };
+                var moe = new IdentityUser { UserName = "Moe", EmailConfirmed = true};
+                var larry = new IdentityUser { UserName = "Larry", EmailConfirmed = true };
+                var curly = new IdentityUser { UserName = "Curly", EmailConfirmed = true };
 
-                    var result = userManager.CreateAsync(jack, "P@ssword1").Result;
-                    if (!result.Succeeded)
-                        throw new Exception(result.Errors.First().Description);
+                userManager.CreateAsync(moe, "P@ssword1").Wait();
+                userManager.CreateAsync(larry, "P@ssword1").Wait();
+                userManager.CreateAsync(curly, "P@ssword1").Wait();
 
-                    result = userManager.AddClaimsAsync(jack, new Claim[] {
-                                new Claim(JwtClaimTypes.Name, "Jack Torrence"),
-                                new Claim(JwtClaimTypes.GivenName, "Jack"),
-                                new Claim(JwtClaimTypes.FamilyName, "Torrence"),
-                                new Claim(JwtClaimTypes.Email, "jack.torrence@email.com"),
-                                new Claim("country", "BE")
-                            }).Result;
+                context.SaveChanges();
 
-                    if (!result.Succeeded)
-                        throw new Exception(result.Errors.First().Description);
-                }
+                userManager.AddToRoleAsync(moe, "Api1.Admin").Wait();
+                userManager.AddToRoleAsync(larry, "Api1.User").Wait();
+                userManager.AddToRoleAsync(curly, "Api1.Readonly").Wait();
 
-                var wendy = userManager.FindByNameAsync("Wendy").Result;
-                if (wendy == null) {
-                    wendy = new IdentityUser {
-                        UserName = "Wendy",
-                        EmailConfirmed = true
-                    };
+                context.SaveChanges();
 
-                    var result = userManager.CreateAsync(wendy, "P@ssword1").Result;
-                    if (!result.Succeeded)
-                        throw new Exception(result.Errors.First().Description);
+                userManager.AddClaimsAsync(moe, new Claim[] {
+                                new Claim(JwtClaimTypes.Name, "Moe"),
+                                new Claim(JwtClaimTypes.Email, "moe@stooges.org")
+                            }).Wait();
 
-                    result = userManager.AddClaimsAsync(wendy, new Claim[] {
-                                new Claim(JwtClaimTypes.Name, "Wendy Torrence"),
-                                new Claim(JwtClaimTypes.GivenName, "Wendy"),
-                                new Claim(JwtClaimTypes.FamilyName, "Torrence"),
-                                new Claim(JwtClaimTypes.Email, "wendy.torrence@email.com"),
-                                new Claim("country", "NL")
-                            }).Result;
+                userManager.AddClaimsAsync(larry, new Claim[] {
+                                new Claim(JwtClaimTypes.Name, "Larry"),
+                                new Claim(JwtClaimTypes.Email, "larry@stooges.org")
+                            }).Wait();
 
-                    if (!result.Succeeded)
-                        throw new Exception(result.Errors.First().Description);
-                }
+                userManager.AddClaimsAsync(curly, new Claim[] {
+                                new Claim(JwtClaimTypes.Name, "Curly"),
+                                new Claim(JwtClaimTypes.Email, "curly@stooges.org")
+                            }).Wait();
+
+                context.SaveChanges();
+
+                //var api1 = new Models.AspNetClient { ClientId = "Api1" };
+                //context.AspNetClients.Add(api1);
+
+                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "Phone" });
+                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "Email" });
+                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "user_scope" });
 
 
             } catch (Exception ex) {
