@@ -24,9 +24,10 @@ This solution consists of four projects that are mostly modeled after IdentitySe
    * NOTE: I added three entities (AspNetClaim, AspNetClient, and AspNetClientClaim) that might not be needed
    * NOTE: I added a UserClientClaimsProfileService and a GetUserClientClaims stored procedure that might not be needed
            (I will explore a revision of the profile service in a separate git branch)
-
    * NOTE: I used a particular naming convention for the roles and user_scope values, where the identifier
            was prefixed by the project name.  This may be used for filtering later.
+   * NOTE: The .Lib prefix was added because the AspNetIdentityServer project will be split into three projects
+           in the future to support a NuGet/Launcher architecture for Api solutions.
 
 2. Api1 -- a Web API projects with a single controller: IdentityController, which
    has a number of GET endpoints, some of which are protected by Authorized Roles and some of which are
