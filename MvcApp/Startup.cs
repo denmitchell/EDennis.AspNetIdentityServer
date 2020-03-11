@@ -64,7 +64,6 @@ namespace MvcApp {
                 options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(IdentityServerConstants.DefaultCookieAuthenticationScheme)
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options => {
                     options.Authority = "https://localhost:5000";
                     options.RequireHttpsMetadata = false;

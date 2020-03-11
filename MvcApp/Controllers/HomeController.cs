@@ -41,10 +41,10 @@ namespace MvcApp.Controllers {
         public async Task<IActionResult> Logout() {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
-            await HttpContext.SignOutAsync(IdentityServerConstants.DefaultCookieAuthenticationScheme);
             await HttpContext.SignOutAsync();
 
             foreach (var cookie in Request.Cookies.Keys) {
+                if(cookie == ".AspNetCore.Identity.Application" || cookie == "idsrv.session")
                 Response.Cookies.Delete(cookie);
             }
 
