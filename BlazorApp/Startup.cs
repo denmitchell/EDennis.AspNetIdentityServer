@@ -79,6 +79,17 @@ namespace BlazorApp {
                     options.SaveTokens = true;
                 });
 
+            services.AddAuthorization(
+            options => {
+                options.AddPolicy("GetPolicy", policy =>
+                    policy.RequireClaim("Api2.scope", "Api2.*.Get*"));
+                options.AddPolicy("EditPolicy", policy =>
+                    policy.RequireClaim("Api2.scope", "Api2.*.Edit*"));
+                options.AddPolicy("DeletePolicy", policy =>
+                    policy.RequireClaim("Api2.scope", "Api2.*.Delete*"));
+            });
+
+
 
         }
 

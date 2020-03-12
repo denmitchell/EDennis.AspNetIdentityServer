@@ -1,0 +1,11 @@
+﻿@page "/get"
+@inherits Pages.Identity.GetBase;
+<h3>Get</h3>
+<AuthorizeView Policy="Api2.*.Get*">
+    <Authorized>
+        <img src="/open-iconic/svg/lock-unlocked.svg" height="500">
+    </Authorized>
+    <NotAuthorized>
+        <img src="/open-iconic/svg/lock-locked.svg" height="500">
+    </NotAuthorized>
+</AuthorizeView>

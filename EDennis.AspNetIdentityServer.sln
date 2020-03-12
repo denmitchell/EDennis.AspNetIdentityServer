@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api1", "Api1\Api1.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api2", "Api2\Api2.csproj", "{11B09021-8B48-46F1-9FD5-4FDF9851BDE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{CA42D266-0773-4DC4-A4C0-FFA5682DE728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\BlazorApp.csproj", "{CA42D266-0773-4DC4-A4C0-FFA5682DE728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

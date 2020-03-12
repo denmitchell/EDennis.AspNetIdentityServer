@@ -1,0 +1,11 @@
+﻿@page "/delete"
+@inherits Pages.Identity.DeleteBase;
+<h3>Delete</h3>
+<AuthorizeView Policy="Api2.*.Delete*">
+    <Authorized>
+        <img src="/open-iconic/svg/lock-unlocked.svg" height="500">
+    </Authorized>
+    <NotAuthorized>
+        <img src="/open-iconic/svg/lock-locked.svg" height="500">
+    </NotAuthorized>
+</AuthorizeView>
