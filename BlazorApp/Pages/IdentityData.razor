@@ -1,0 +1,70 @@
+﻿@page "/identitydata"
+
+@using BlazorApp.Data
+@inject IIdentityService IdentityService
+
+<h1>Identity Data</h1>
+
+<p>This component demonstrates fetching data from a secure API.</p>
+
+@if (allClaims == null) {
+    <p><em>Loading...</em></p>
+} else {
+    <h4>Claims</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Claim Type</th>
+                <th>Claim Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in allClaims) {
+                <tr>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h4>Endpoints</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Endpoint</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>GetGetPolicy</td><td>@getGetPolicy</td></tr>
+            <tr><td>GetGetRole</td><td>@getGetRole</td></tr>
+            <tr><td>GetEditPolicy</td><td>@getEditPolicy</td></tr>
+            <tr><td>GetEditRole</td><td>@getEditRole</td></tr>
+            <tr><td>GetDeletePolicy</td><td>@getDeletePolicy</td></tr>
+            <tr><td>GetDeleteRole</td><td>@getDeleteRole</td></tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    private ClaimViewModel[] allClaims;
+    private string getGetPolicy;
+    private string getGetRole;
+    private string getEditPolicy;
+    private string getEditRole;
+    private string getDeletePolicy;
+    private string getDeleteRole;
+
+    protected override async Task OnInitializedAsync() {
+        allClaims = (await IdentityService.GetClaims()).ToArray();
+        getGetPolicy = await IdentityService.GetGetPolicy();
+        getGetRole = await IdentityService.GetGetRole();
+        getEditPolicy = await IdentityService.GetEditPolicy();
+        getEditRole = await IdentityService.GetEditRole();
+        getDeletePolicy = await IdentityService.GetDeletePolicy();
+        getDeleteRole = await IdentityService.GetDeleteRole();
+
+
+    }
+}

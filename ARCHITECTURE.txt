@@ -1,4 +1,4 @@
-This solution consists of four projects that are mostly modeled after IdentityServer quickstart projects:
+This solution consists of several projects that are mostly modeled after IdentityServer quickstart projects:
 
 **See Item 1K for changes in this branch vs. the master
 
@@ -29,7 +29,7 @@ This solution consists of four projects that are mostly modeled after IdentitySe
    * NOTE: The .Lib prefix was added because the AspNetIdentityServer project will be split into three projects
            in the future to support a NuGet/Launcher architecture for Api solutions.
 
-2. Api1 -- a Web API projects with a single controller: IdentityController, which
+2. Api1 & Api2 -- Web API projects with a single controller: IdentityController, which
    has a number of GET endpoints, some of which are protected by Authorized Roles and some of which are
    protected by Authorized policies.
 
@@ -50,3 +50,5 @@ This solution consists of four projects that are mostly modeled after IdentitySe
    - The project makes use of an Apis section in appsettings.Development.json.
    - See the Startup class for additional configurations.
 
+5. BlazorApp -- which is a Blazor version of the MvcApp, except that the project points to
+   Api2, rather than Api1.

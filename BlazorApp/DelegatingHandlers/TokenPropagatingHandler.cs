@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Globalization;
 using IdentityServer4.Models;
 
-namespace MvcApp {
+namespace BlazorApp {
     //TODO: Move to reusable library
     public class TokenPropagatingHandler<TApiClient> : DelegatingHandler {
 

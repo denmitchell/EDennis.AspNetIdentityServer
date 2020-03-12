@@ -80,6 +80,34 @@ namespace EDennis.AspNetIdentityServer {
                     },
 
                     AllowOfflineAccess = true
+                },
+                // interactive ASP.NET Core MVC client
+                new Client
+                {
+                    ClientId = "BlazorApp",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequireConsent = false,
+                    RequirePkce = true,
+
+                    AccessTokenType = AccessTokenType.Reference,
+
+                    // where to redirect to after login
+                    RedirectUris = { "https://localhost:5003/signin-oidc" },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "https://localhost:5003/signout-callback-oidc" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "Api2",
+                        "roles"
+                    },
+
+                    AllowOfflineAccess = true
                 }
             };
     }

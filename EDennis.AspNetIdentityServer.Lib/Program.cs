@@ -122,9 +122,9 @@ namespace EDennis.AspNetIdentityServer {
                 var readOnly = new IdentityRole { Name = "MvcApp.Readonly" };
 
 
-                var admin2 = new IdentityRole { Name = "SomeOtherApp.Admin" };
-                var user2 = new IdentityRole { Name = "SomeOtherApp.User" };
-                var readOnly2 = new IdentityRole { Name = "SomeOtherApp.Readonly" };
+                var admin2 = new IdentityRole { Name = "BlazorApp.Admin" };
+                var user2 = new IdentityRole { Name = "BlazorApp.User" };
+                var readOnly2 = new IdentityRole { Name = "BlazorApp.Readonly" };
 
 
                 roleManager.CreateAsync(admin).Wait();
@@ -174,9 +174,9 @@ namespace EDennis.AspNetIdentityServer {
                 userManager.AddToRoleAsync(larry, "MvcApp.User").Wait();
                 userManager.AddToRoleAsync(curly, "MvcApp.Readonly").Wait();
 
-                userManager.AddToRoleAsync(moe, "SomeOtherApp.Readonly").Wait();
-                userManager.AddToRoleAsync(larry, "SomeOtherApp.Admin").Wait();
-                userManager.AddToRoleAsync(curly, "SomeOtherApp.User").Wait();
+                userManager.AddToRoleAsync(moe, "BlazorApp.Readonly").Wait();
+                userManager.AddToRoleAsync(larry, "BlazorApp.Admin").Wait();
+                userManager.AddToRoleAsync(curly, "BlazorApp.User").Wait();
 
 
                 context.SaveChanges();
@@ -197,13 +197,6 @@ namespace EDennis.AspNetIdentityServer {
                             }).Wait();
 
                 context.SaveChanges();
-
-                //var api1 = new Models.AspNetClient { ClientId = "Api1" };
-                //context.AspNetClients.Add(api1);
-
-                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "Phone" });
-                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "Email" });
-                //context.AspNetClientClaims.Add(new Models.AspNetClientClaim { ClientId = "Api1", ClaimType = "user_scope" });
 
 
             } catch (Exception ex) {
