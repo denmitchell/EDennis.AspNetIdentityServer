@@ -46,6 +46,7 @@ namespace BlazorApp {
         /// <returns></returns>
         protected override async Task<HttpResponseMessage> SendAsync(
             HttpRequestMessage request, CancellationToken cancellationToken) {
+
             var accessToken = await GetAccessTokenAsync();
 
             if (!string.IsNullOrWhiteSpace(accessToken)) {

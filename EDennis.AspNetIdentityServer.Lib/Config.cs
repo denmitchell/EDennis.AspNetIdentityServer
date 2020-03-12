@@ -36,7 +36,7 @@ namespace EDennis.AspNetIdentityServer {
                 new ApiResource("Api2", "Api2", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }
+                    UserClaims = { "Name","Email"/*,"Api2.scope"*/ }
                 }
             };
 

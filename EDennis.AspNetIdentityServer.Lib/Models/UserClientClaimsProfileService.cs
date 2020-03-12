@@ -29,6 +29,8 @@ namespace EDennis.AspNetIdentityServer.Lib.Models {
 
             if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(userId)) {
 
+                //TODO: Possibly remove client_id prefix -- or not
+
                 var roles = (from r in _dbContext.Roles
                              join ur in _dbContext.UserRoles on r.Id equals ur.RoleId
                              join u in _dbContext.Users on ur.UserId equals u.Id

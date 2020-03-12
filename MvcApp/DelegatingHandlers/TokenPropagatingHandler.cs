@@ -16,6 +16,7 @@ using System.Globalization;
 using IdentityServer4.Models;
 
 namespace MvcApp {
+    //TODO: Add descriptive logging for errors
     //TODO: Move to reusable library
     public class TokenPropagatingHandler<TApiClient> : DelegatingHandler {
 

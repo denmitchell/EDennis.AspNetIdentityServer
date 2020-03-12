@@ -25,7 +25,7 @@ namespace Api1 {
             var accessToken = await _httpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
             var response = await _client.IntrospectTokenAsync(new TokenIntrospectionRequest {
                 Address = disco.IntrospectionEndpoint,
-                ClientId = "api1",
+                ClientId = "api2",
                 ClientSecret = "secret",
 
                 Token = accessToken
