@@ -19,6 +19,12 @@ namespace EDennis.AspNetIdentityServer {
                             new List<string>() { "role" })
             };
 
+        public static void ABC() {
+            var i = new IdentityResource();
+            i.UserClaims = null;
+            return;
+
+        }
 
 
         //Api1.Role   Api1.Admin
@@ -31,7 +37,7 @@ namespace EDennis.AspNetIdentityServer {
                 new ApiResource("Api1", "Api1", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }
+                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }                     
                 },
                 new ApiResource("Api2", "Api2", new List<string>() { "role" })
                 {
