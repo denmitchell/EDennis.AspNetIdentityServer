@@ -27,22 +27,18 @@ namespace EDennis.AspNetIdentityServer {
         }
 
 
-        //Api1.Role   Api1.Admin
-        //Api1.Scope
-
-
         public static IEnumerable<ApiResource> Apis =>
             new List<ApiResource>
             {
                 new ApiResource("Api1", "Api1", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email"/*,"Api1.scope"*/ }                     
+                    UserClaims = { "Name","Email","role","user_scope" }                     
                 },
                 new ApiResource("Api2", "Api2", new List<string>() { "role" })
                 {
                     ApiSecrets = { new Secret("secret".Sha256()) },
-                    UserClaims = { "Name","Email"/*,"Api2.scope"*/ }
+                    UserClaims = { "Name","Email", "role", "user_scope" }
                 }
             };
 
@@ -81,11 +77,12 @@ namespace EDennis.AspNetIdentityServer {
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "Api1",
+                        "Api1", "Api1.*.Get*", "Api1.*.Edit*", "Api1.*.Delete*",
                         "roles"
                     },
 
-                    AllowOfflineAccess = true
+                    AllowOfflineAccess = true,
+                    ClientClaimsPrefix = ""
                 },
                 // interactive ASP.NET Core MVC client
                 new Client
@@ -109,11 +106,12 @@ namespace EDennis.AspNetIdentityServer {
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "Api2",
+                        "Api2", "Api2.*.Get*", "Api2.*.Edit*", "Api2.*.Delete*",
                         "roles"
                     },
 
-                    AllowOfflineAccess = true
+                    AllowOfflineAccess = true,
+                    ClientClaimsPrefix = ""
                 }
             };
     }

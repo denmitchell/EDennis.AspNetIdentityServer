@@ -139,20 +139,20 @@ namespace EDennis.AspNetIdentityServer {
 
                 context.SaveChanges();
 
-                roleManager.AddClaimAsync(admin, new Claim("Api1.scope", "Api1.*.Get*")).Wait();
-                roleManager.AddClaimAsync(admin, new Claim("Api1.scope", "Api1.*.Edit*")).Wait();
-                roleManager.AddClaimAsync(admin, new Claim("Api1.scope", "Api1.*.Delete*")).Wait();
-                roleManager.AddClaimAsync(user, new Claim("Api1.scope", "Api1.*.Get*")).Wait();
-                roleManager.AddClaimAsync(user, new Claim("Api1.scope", "Api1.*.Edit*")).Wait();
-                roleManager.AddClaimAsync(readOnly, new Claim("Api1.scope", "Api1.*.Get*")).Wait();
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Get*")).Wait();
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(admin, new Claim("user_scope", "Api1.*.Delete*")).Wait();
+                roleManager.AddClaimAsync(user, new Claim("user_scope", "Api1.*.Get*")).Wait();
+                roleManager.AddClaimAsync(user, new Claim("user_scope", "Api1.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(readOnly, new Claim("user_scope", "Api1.*.Get*")).Wait();
 
 
-                roleManager.AddClaimAsync(admin2, new Claim("Api2.scope", "Api2.*.Get*")).Wait();
-                roleManager.AddClaimAsync(admin2, new Claim("Api2.scope", "Api2.*.Edit*")).Wait();
-                roleManager.AddClaimAsync(admin2, new Claim("Api2.scope", "Api2.*.Delete*")).Wait();
-                roleManager.AddClaimAsync(user2, new Claim("Api2.scope", "Api2.*.Get*")).Wait();
-                roleManager.AddClaimAsync(user2, new Claim("Api2.scope", "Api2.*.Edit*")).Wait();
-                roleManager.AddClaimAsync(readOnly2, new Claim("Api2.scope", "Api2.*.Get*")).Wait();
+                roleManager.AddClaimAsync(admin2, new Claim("user_scope", "Api2.*.Get*")).Wait();
+                roleManager.AddClaimAsync(admin2, new Claim("user_scope", "Api2.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(admin2, new Claim("user_scope", "Api2.*.Delete*")).Wait();
+                roleManager.AddClaimAsync(user2, new Claim("user_scope", "Api2.*.Get*")).Wait();
+                roleManager.AddClaimAsync(user2, new Claim("user_scope", "Api2.*.Edit*")).Wait();
+                roleManager.AddClaimAsync(readOnly2, new Claim("user_scope", "Api2.*.Get*")).Wait();
 
                 context.SaveChanges();
 
