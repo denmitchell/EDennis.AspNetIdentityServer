@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EDennis.AspNetIdentityServer.Lib.Models {
+namespace EDennis.AspNetIdentityServer.Models {
     public class MockEmailSender : IEmailSender {
 
         private readonly ILogger<MockEmailSender> _logger;
